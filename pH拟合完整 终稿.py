@@ -1,7 +1,6 @@
 import numpy as np
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
-import pandas as pd
 
 
 # ==============================
@@ -28,7 +27,7 @@ import pandas as pd
 
 #测试数据：
 pHlist=[
-    3.25, 3.49, 3.68, 3.84, 3.97, 4.09, 4.18, 4.26, 4.33, 4.42,
+    5, 3.49, 3.68, 3.84, 3.97, 4.09, 4.18, 4.26, 4.33, 4.42,
     4.49, 4.55, 4.61, 4.67, 4.75, 4.85, 4.94, 5.01, 5.08, 5.16,
     5.26, 5.37, 5.50, 5.65, 5.90, 6.37, 10.02, 10.69, 11.02, 11.21,
     11.32, 11.40
@@ -56,7 +55,7 @@ def model_func(pH, ka, cA, Va):
     cOH = 1e-14 / cH
     b = cH - cOH  # 电荷平衡项
     a = ka / (cH + ka)  # 解离分数
-    V = (a * Va * (cA - b)) / (b + cB)
+    V = (Va * (a * cA - b)) / (b + cB)
     return V
 
 
@@ -96,10 +95,10 @@ ka_fit, cA_fit, Va_fit = params_opt
 # 第一次结果输出
 # ==============================
 print("拟合结果：")
-print(f"Ka = {ka_fit:.3e} (pKa = {-np.log10(ka_fit):.2f})")
-print(f"初始浓度 cA = {cA_fit:.3f} mol/L")
-print(f"初始体积 Va = {Va_fit:.1f} mL")
-print(f"乙酸原液浓度 = {cA_fit*Va_fit/25:.3f} mol/L")
+print(f"Ka = {ka_fit:.4e} (pKa = {-np.log10(ka_fit):.2f})")
+print(f"初始浓度 cA = {cA_fit:.4f} mol/L")
+print(f"初始体积 Va = {Va_fit:.4f} mL")
+print(f"乙酸原液浓度 = {cA_fit*Va_fit/25:.4f} mol/L")
 
 # 计算R²
 V_pred = model_func(pH_data, ka_fit, cA_fit, Va_fit)
@@ -156,9 +155,9 @@ r_squared_clean = 1 - (ss_res_clean / ss_tot_clean)
 # =================================================================
 print("\n剔除异常点后拟合结果：")
 print(f"Ka = {ka_fit_clean:.3e} (pKa = {-np.log10(ka_fit_clean):.2f})")
-print(f"初始浓度 cA = {cA_fit_clean:.3f} mol/L")
-print(f"初始体积 Va = {Va_fit_clean:.1f} mL")
-print(f"乙酸原液浓度 = {cA_fit_clean*Va_fit_clean/25:.3f} mol/L")
+print(f"初始浓度 cA = {cA_fit_clean:.4f} mol/L")
+print(f"初始体积 Va = {Va_fit_clean:.4f} mL")
+print(f"乙酸原液浓度 = {cA_fit_clean*Va_fit_clean/25:.4f} mol/L")
 print(f"R² = {r_squared_clean:.4f}")
 
 # 生成新拟合曲线 (pH作为自变量更准确)
@@ -198,9 +197,9 @@ ax1.plot(V_fit_curve, pH_fine, 'b-', label='拟合曲线', linewidth=2, zorder=2
 
 # 添加标注信息
 textstr = '\n'.join((
-    f'Ka = {ka_fit:.2e}',
+    f'Ka = {ka_fit:.4e}',
     f'pKa = {-np.log10(ka_fit):.2f}',
-    f'cA-origin = {cA_fit*Va_fit/25:.3f} mol/L',
+    f'cA-origin = {cA_fit*Va_fit/25:.4f} mol/L',
     f'R² = {r_squared:.4f}'))
 ax1.text(0.95, 0.15, textstr, transform=ax1.transAxes,
         fontsize=10, verticalalignment='top', 
@@ -229,9 +228,9 @@ ax2.plot(V_fit_curve_clean, pH_fine_clean, 'b-',
 
 # 添加标注信息
 textstr_clean = '\n'.join((
-    f'Ka = {ka_fit_clean:.2e}',
+    f'Ka = {ka_fit_clean:.4e}',
     f'pKa = {-np.log10(ka_fit_clean):.2f}',
-    f'cA-origin = {cA_fit_clean*Va_fit_clean/25:.3f} mol/L',
+    f'cA-origin = {cA_fit_clean*Va_fit_clean/25:.4f} mol/L',
     f'R² = {r_squared_clean:.4f}'))
 ax2.text(0.95, 0.15, textstr_clean, transform=ax2.transAxes,
         fontsize=10, verticalalignment='top', 
