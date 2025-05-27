@@ -164,10 +164,6 @@ print(f"R² = {r_squared_clean:.4f}")
 pH_fine_clean = np.linspace(pH_data_clean.min(), pH_data_clean.max(), 300)
 V_fit_curve_clean = model_func(pH_fine_clean, ka_fit_clean, 
                               cA_fit_clean, Va_fit_clean)
-import numpy as np
-from scipy.optimize import curve_fit
-import matplotlib.pyplot as plt
-
 
 
 
